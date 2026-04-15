@@ -3,7 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    git-hooks.url = "github:cachix/git-hooks.nix";
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -13,14 +16,42 @@
   } @ inputs: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
+    lib = pkgs.lib;
 
     pre-commit-check = inputs.git-hooks.lib.${system}.run {
       src = ./.;
 
       # GIT HOOKS GO HERE
       # See https://devenv.sh/git-hooks/ for how to configure hooks
-      hooks = {
+      hooks = let
+        eslint-wrapper = pkgs.writeShellApplication {
+          name = "eslint";
+          runtimeInputs = with pkgs; [
+            eslint
+            pnpm
+          ];
+
+          text = ''
+            # Note that we use the pnpm version of eslint, which supports plugins
+            pnpm --dir "$(git rev-parse --show-toplevel)"/frontend exec eslint . --fix
+          '';
+        };
+      in {
         alejandra.enable = true;
+
+        eslint = {
+          enable = true;
+          name = "eslint";
+          entry = "${lib.getExe eslint-wrapper}";
+
+          files = "^frontend/.*\\.(${
+            builtins.concatStringsSep "|" [
+              "js"
+              "ts"
+              "svelte"
+            ]
+          })$";
+        };
       };
     };
   in {

@@ -16,6 +16,9 @@
 
     pre-commit-check = inputs.git-hooks.lib.${system}.run {
       src = ./.;
+
+      # GIT HOOKS GO HERE
+      # See https://devenv.sh/git-hooks/ for how to configure hooks
       hooks = {
         alejandra.enable = true;
       };

@@ -3,16 +3,27 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    git-hooks.url = "github:cachix/git-hooks.nix";
   };
 
   outputs = {
     self,
     nixpkgs,
-  }: let
+    ...
+  } @ inputs: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
+
+    pre-commit-check = inputs.git-hooks.lib.${system}.run {
+      src = ./.;
+      hooks = {
+        alejandra.enable = true;
+      };
+    };
   in {
     devShells.${system}.default = pkgs.mkShell {
+      inherit (pre-commit-check) shellHook;
+
       packages = with pkgs; [
         # NIX
         nixd # LSP

@@ -1,10 +1,23 @@
 {
   description = "Devshell for this project";
 
+  nixConfig = {
+    extra-substituters = [
+      "https://fenix.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "fenix.cachix.org-1:ecJhr+RdYEdcVgUkjruiYhjbBloIEGov7bos90cZi0Q="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    fenix = {
+      url = "github:nix-community/fenix/monthly";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -15,8 +28,17 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
+    pkgs = import nixpkgs {
+      inherit system;
+      overlays = [inputs.fenix.overlays.default];
+    };
+
     lib = pkgs.lib;
+
+    rust-toolchain = pkgs.fenix.fromToolchainFile {
+      file = ./hls-server/rust-toolchain.toml;
+      sha256 = "sha256-AJ6LX/Q/Er9kS15bn9iflkUwcgYqRQxiOIL2ToVAXaU=";
+    };
 
     pre-commit-check = inputs.git-hooks.lib.${system}.run {
       src = ./.;
@@ -117,6 +139,10 @@
         # NODE
         nodejs_25
         pnpm
+
+        # RUST
+        rust-toolchain
+        rust-analyzer-nightly
       ];
     };
   };

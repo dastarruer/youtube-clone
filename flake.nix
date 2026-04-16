@@ -58,7 +58,7 @@
           '';
         };
 
-        prettier-wrapper = pkgs.writeShellApplication {
+        prettier-svelte-wrapper = pkgs.writeShellApplication {
           name = "prettier";
           runtimeInputs = [pkgs.pnpm];
 
@@ -94,10 +94,10 @@
           })$";
         };
 
-        prettier = {
+        prettier-svelte = {
           enable = true;
-          name = "prettier";
-          entry = "${lib.getExe prettier-wrapper}";
+          name = "prettier-svelte";
+          entry = "${lib.getExe prettier-svelte-wrapper}";
 
           files = "^frontend/.*\\.(${
             builtins.concatStringsSep "|" [
@@ -156,6 +156,15 @@
 
         check-toml.enable = true;
         taplo.enable = true;
+
+        prettier = {
+          enable = true;
+
+          # prettier-svelte will handle files in frontend/
+          excludes = ["^frontend/.*"];
+        };
+
+        markdownlint.enable = true;
       };
     };
   in {

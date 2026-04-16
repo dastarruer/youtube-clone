@@ -41,7 +41,7 @@
           runtimeInputs = [pkgs.pnpm];
 
           text = ''
-            # Note that we use the pnpm version of eslint, which supports plugins
+            # Note that we use the pnpm version of prettier, which supports plugins
             pnpm --dir "$(git rev-parse --show-toplevel)"/frontend exec prettier --write "''${@#frontend/}"
           '';
         };

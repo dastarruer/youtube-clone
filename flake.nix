@@ -52,7 +52,7 @@
 
           text = ''
             # Note that we use the pnpm version of svelte-check, which supports plugins
-            pnpm --dir "$(git rev-parse --show-toplevel)"/frontend exec svelte-check "''${@#frontend/}"
+            pnpm --dir "$(git rev-parse --show-toplevel)"/frontend exec svelte-check
           '';
         };
       in {
@@ -92,6 +92,7 @@
           enable = true;
           name = "svelte-check";
           entry = "${lib.getExe svelte-check-wrapper}";
+          pass_filenames = false;
 
           files = "^frontend/.*\\.(${
             builtins.concatStringsSep "|" [

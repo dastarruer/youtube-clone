@@ -25,15 +25,24 @@
       }
     },
     "Svelte": {
-      "language_servers": ["svelte-language-server", "tailwindcss-language-server", "vtsls"],
+      "language_servers": [
+        "svelte-language-server",
+        "tailwindcss-language-server",
+        "vtsls"
+      ],
       "formatter": "prettier"
     }
   },
   "lsp": {
     "rust-analyzer": {
       "initialization_options": {
-        "checkOnSave": {
+        "checkOnSave": true,
+        "check": {
           "command": "clippy"
+        },
+        "binary": {
+          "path": "rust-analyzer",
+          "arguments": []
         }
       }
     },

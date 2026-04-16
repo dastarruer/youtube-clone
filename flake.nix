@@ -81,6 +81,8 @@
             builtins.concatStringsSep "|" [
               "js"
               "ts"
+              "json"
+              "yaml"
               "svelte"
             ]
           })$";

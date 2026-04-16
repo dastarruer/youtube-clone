@@ -35,7 +35,7 @@
         };
 
         prettier-wrapper = pkgs.writeShellApplication {
-          name = "eslint";
+          name = "prettier";
           runtimeInputs = [pkgs.pnpm];
 
           text = ''

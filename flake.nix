@@ -45,6 +45,16 @@
             pnpm --dir "$(git rev-parse --show-toplevel)"/frontend exec prettier --write "''${@#frontend/}"
           '';
         };
+
+        svelte-check-wrapper = pkgs.writeShellApplication {
+          name = "svelte-check";
+          runtimeInputs = [pkgs.pnpm];
+
+          text = ''
+            # Note that we use the pnpm version of svelte-check, which supports plugins
+            pnpm --dir "$(git rev-parse --show-toplevel)"/frontend exec svelte-check "''${@#frontend/}"
+          '';
+        };
       in {
         alejandra.enable = true;
 
@@ -66,6 +76,20 @@
           enable = true;
           name = "prettier";
           entry = "${lib.getExe prettier-wrapper}";
+
+          files = "^frontend/.*\\.(${
+            builtins.concatStringsSep "|" [
+              "js"
+              "ts"
+              "svelte"
+            ]
+          })$";
+        };
+
+        svelte-check = {
+          enable = true;
+          name = "svelte-check";
+          entry = "${lib.getExe svelte-check-wrapper}";
 
           files = "^frontend/.*\\.(${
             builtins.concatStringsSep "|" [

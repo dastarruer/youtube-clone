@@ -33,6 +33,16 @@
             pnpm --dir "$(git rev-parse --show-toplevel)"/frontend exec eslint . --fix
           '';
         };
+
+        prettier-wrapper = pkgs.writeShellApplication {
+          name = "eslint";
+          runtimeInputs = [pkgs.pnpm];
+
+          text = ''
+            # Note that we use the pnpm version of eslint, which supports plugins
+            pnpm --dir "$(git rev-parse --show-toplevel)"/frontend exec prettier --write .
+          '';
+        };
       in {
         alejandra.enable = true;
 
@@ -52,8 +62,8 @@
 
         prettier = {
           enable = true;
-          name = "eslint";
-          entry = "${lib.getExe eslint-wrapper}";
+          name = "prettier";
+          entry = "${lib.getExe prettier-wrapper}";
 
           files = "^frontend/.*\\.(${
             builtins.concatStringsSep "|" [

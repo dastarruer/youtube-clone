@@ -1,0 +1,50 @@
+{
+  "languages": {
+    "Nix": {
+      "tab_size": 2,
+      "language_servers": ["nixd", "!nil"],
+      "formatter": {
+        "external": {
+          "command": "alejandra",
+          "arguments": ["--quiet"]
+        }
+      }
+    },
+    "Rust": {
+      "language_servers": ["rust-analyzer"],
+      "format_on_save": "on"
+    },
+    "Python": {
+      "language_servers": ["ruff", "pyright"],
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "ruff",
+          "arguments": ["format", "--stdin-filename", "{buffer_path}", "-"]
+        }
+      }
+    },
+    "Svelte": {
+      "language_servers": ["svelte-language-server", "tailwindcss-language-server", "vtsls"],
+      "formatter": "prettier"
+    }
+  },
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "checkOnSave": {
+          "command": "clippy"
+        }
+      }
+    },
+    "pyright": {
+      "settings": {
+        "python": {
+          "analysis": {
+            "typeCheckingMode": "strict"
+          }
+        }
+      }
+    }
+  }
+}

@@ -23,6 +23,8 @@
 
       # GIT HOOKS GO HERE
       # See https://devenv.sh/git-hooks/ for how to configure hooks
+      # To get the root of the project, use the following command as a workaround: $(git rev-parse --show-toplevel)
+      # See https://github.com/NixOS/nix/issues/8034#issuecomment-3366842508 for more info
       hooks = let
         eslint-wrapper = pkgs.writeShellApplication {
           name = "eslint";

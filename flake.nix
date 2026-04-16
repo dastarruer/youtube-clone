@@ -26,10 +26,7 @@
       hooks = let
         eslint-wrapper = pkgs.writeShellApplication {
           name = "eslint";
-          runtimeInputs = with pkgs; [
-            eslint
-            pnpm
-          ];
+          runtimeInputs = [pkgs.pnpm];
 
           text = ''
             # Note that we use the pnpm version of eslint, which supports plugins
@@ -40,6 +37,20 @@
         alejandra.enable = true;
 
         eslint = {
+          enable = true;
+          name = "eslint";
+          entry = "${lib.getExe eslint-wrapper}";
+
+          files = "^frontend/.*\\.(${
+            builtins.concatStringsSep "|" [
+              "js"
+              "ts"
+              "svelte"
+            ]
+          })$";
+        };
+
+        prettier = {
           enable = true;
           name = "eslint";
           entry = "${lib.getExe eslint-wrapper}";

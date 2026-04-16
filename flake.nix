@@ -79,6 +79,7 @@
     };
   in {
     devShells.${system}.default = pkgs.mkShell {
+      # Install pre-commit hooks in the shell hook
       inherit (pre-commit-check) shellHook;
 
       packages = with pkgs; [

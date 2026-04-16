@@ -173,6 +173,9 @@
       inherit (pre-commit-check) shellHook;
 
       packages = with pkgs; [
+        # MARKDOWN
+        markdownlint-cli # Formatter
+
         # NIX
         nixd # LSP
         alejandra # Formatter

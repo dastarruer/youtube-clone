@@ -32,7 +32,7 @@
 
           text = ''
             # Note that we use the pnpm version of eslint, which supports plugins
-            pnpm --dir "$(git rev-parse --show-toplevel)"/frontend exec eslint . --fix "''${@#frontend/}" # Remove the "frontend/" prefix from filenames before passing to prettier, since prettier is being run in the /frontend directory anyways
+            pnpm --dir "$(git rev-parse --show-toplevel)"/frontend exec eslint  "''${@#frontend/}" --fix # Remove the "frontend/" prefix from filenames before passing to prettier, since prettier is being run in the /frontend directory anyways
           '';
         };
 

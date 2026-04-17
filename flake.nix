@@ -125,6 +125,35 @@
           })$";
         };
 
+        clippy = {
+          enable = true;
+
+          packageOverrides = {
+            cargo = rust-toolchain;
+            clippy = rust-toolchain;
+          };
+
+          settings = {
+            allFeatures = true;
+            denyWarnings = true;
+            extraArgs = "--manifest-path hls-server/Cargo.toml";
+          };
+        };
+
+        rustfmt = {
+          enable = true;
+
+          packageOverrides = {
+            cargo = rust-toolchain;
+            rustfmt = rust-toolchain;
+          };
+
+          settings = {
+            check = true;
+            manifest-path = "hls-server/Cargo.toml";
+          };
+        };
+
         check-toml.enable = true;
         taplo.enable = true;
       };

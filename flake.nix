@@ -124,6 +124,9 @@
             ]
           })$";
         };
+
+        check-toml.enable = true;
+        taplo.enable = true;
       };
     };
   in {

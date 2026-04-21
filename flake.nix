@@ -188,6 +188,18 @@
         rust-toolchain
         rust-analyzer-nightly
       ];
+
+      nativeBuildInputs = with pkgs; [
+        pkg-config
+        clang
+      ];
+
+      buildInputs = [
+        pkgs.ffmpeg
+      ];
+
+      # Necessary, otherwise cargo build will fail
+      LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
     };
   };
 }
